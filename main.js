@@ -8,32 +8,68 @@ var word = require('./word.js');
 
 var newGame = new game();
 
-// var gameAnswer = newGame.chosenWord;
+var gameAnswer = newGame.chosenWord;
 
 // console.log(gameAnswer);
 
+var guessesLeft = 12;
+
 var checkWord = new word(newGame.chosenWord);
-console.log(checkWord.word);
-console.log(checkWord.checkLetters("a"));
+
 
 var newLetter = new letter(checkWord.word);
-console.log(newLetter.word);
-
-newLetter.begin();
-console.log(newLetter.output);
-
-Hangman();
-
-function Hangman (){
-	inquirer.prompt([{
-	name: "guess",
-	message: "The word is:"
 
 
+var isFirstGuess = true;
 
-	}])
+hangman();
 
-	// else{
-	// 	Hangman();
-	// } 
+function hangman (){
+	
+	
+
+	if (guessesLeft > 0) {
+
+		console.log("Remaining Guesses :" + guessesLeft)
+
+		if (isFirstGuess) {
+			newLetter.begin();
+			console.log(newLetter.output);
+		}
+		else {
+			console.log(newLetter.display());
+		}
+
+		console.log("Letters Guessed: " + newLetter.lettersGuessed);
+
+		inquirer.prompt({
+		name: "guess",
+		message: "Pick a letter: "
+		}).then(function(answer) {
+			isFirstGuess = false;
+			newLetter.update(answer.guess);
+
+			if (newLetter.isMatch) {
+				if(newLetter.win()) {
+					console.log("You won");
+					console.log("The answer was: " + gameAnswer);
+					return;
+				}
+				hangman();
+
+			}
+
+			else {
+				guessesLeft--;
+				hangman();
+			}
+
+		})
+	}	
+
+	else {
+		console.log("no guesses remaining, you lost");
+		console.log("The answer was: " + gameAnswer);
+	}
+
 }
