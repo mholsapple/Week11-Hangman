@@ -8,16 +8,20 @@ function Letters(word) {
     this.output = [];
     this.isMatch = false;
 
+    //the game function that is called in the main.js file so when a player begins the game, it outputs the _'s based on the random word chosen
+
     this.begin = function(){
         for (i in this.word){
             this.output.push("_");
         }
     };
 
+    //the function that displys the output
     this.display = function(){
         return this.output;
     };
 
+    //the function that pushes the letters guessed from the array into the letter picked.
     this.update = function(letterPicked){
         this.lettersGuessed.push(letterPicked);
         this.isMatch = false;
@@ -29,6 +33,8 @@ function Letters(word) {
             }
     };
 
+    //the function that determines whether the player wins. ala stands for Answers Letter Array and op stands for output. this is taking those arrays and making them into a string so it can check to see if the letters guessed match the word guessed
+
     this.win = function(){
         var alaString = this.answerLettersArray.toString();
         var opString = this.output.toString();
@@ -38,5 +44,7 @@ function Letters(word) {
     }
 
  }
+
+ //needed to make the file load
 
  module.exports = Letters;
